@@ -1,0 +1,15 @@
+{
+  "name": "TIKET CHAIN QUANTUM",
+  "short_name": "TIKET",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#6a11cb",
+  "theme_color": "#6a11cb",
+  "icons": [
+    {
+      "src": "https://cdn-icons-png.flaticon.com/512/138/138475.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
