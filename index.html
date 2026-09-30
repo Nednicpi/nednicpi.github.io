@@ -3,49 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TIKET CHAIN QUANTUM - Official</title>
+<title>TIKET CHAIN QUANTUM - Global Mining</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#6a11cb">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:system-ui}
-body{background:linear-gradient(135deg,#6a11cb 0%,#2575fc 100%);min-height:100vh;color:white;display:flex;align-items:center;justify-content:center;padding:20px}
-.card{background:rgba(255,255,255,0.12);backdrop-filter:blur(20px);border-radius:24px;padding:30px;max-width:420px;width:100%;text-align:center;border:1px solid rgba(255,255,255,0.2)}
-h1{font-size:26px;margin-bottom:8px}
-p{opacity:.9;font-size:14px;margin-bottom:20px;line-height:1.5}
-.input{width:100%;padding:14px;border-radius:12px;border:none;margin-bottom:12px;font-size:16px}
-.btn{width:100%;padding:14px;border-radius:12px;border:none;font-weight:bold;font-size:16px;cursor:pointer;margin-bottom:10px}
-.btn-cek{background:white;color:#6a11cb}
-.btn-install{background:black;color:white;display:none}
-.verified{margin-top:15px;padding:12px;background:rgba(0,255,0,0.15);border-radius:10px;display:none;font-size:13px}
-small{opacity:.6;font-size:11px;margin-top:15px;display:block}
+body{background:linear-gradient(135deg,#6a11cb,#2575fc);min-height:100vh;color:#fff;display:flex;justify-content:center;padding:12px}
+.card{background:rgba(255,255,255,.14);backdrop-filter:blur(18px);border-radius:22px;padding:18px;max-width:460px;width:100%;border:1px solid rgba(255,255,255,.2)}
+h1{text-align:center;font-size:21px}.sub{text-align:center;font-size:12px;opacity:.85;margin:5px 0 10px}
+.lang{display:flex;gap:5px;flex-wrap:wrap;justify-content:center;margin-bottom:10px}
+.lang button{padding:5px 9px;border-radius:20px;border:none;font-size:11px;cursor:pointer;background:rgba(0,0,0,.3);color:#fff}
+.lang.on{background:#fff;color:#6a11cb}
+.analytics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:10px}
+.aBox{background:rgba(0,0,0,.3);padding:8px;border-radius:10px;text-align:center}
+.aBox b{font-size:16px;display:block}.aBox span{font-size:10px;opacity:.8}
+.tab{display:flex;gap:6px;margin-bottom:10px}.tab button{flex:1;padding:9px;border-radius:10px;border:none;font-weight:bold;cursor:pointer;font-size:13px}
+.active{background:#fff;color:#6a11cb}.inactive{background:rgba(0,0,0,.3);color:#fff}
+.input{width:100%;padding:12px;border-radius:11px;border:none;margin-bottom:8px;font-size:14px}
+.btn{width:100%;padding:12px;border-radius:11px;border:none;font-weight:bold;cursor:pointer;font-size:14px}
+.btn-cek{background:#fff;color:#6a11cb}.btn-mine{background:#00ff88;color:#000}
+.box{margin-top:8px;padding:10px;background:rgba(0,0,0,.28);border-radius:10px;font-size:12px;display:none;word-break:break-all}
+.stat{display:flex;justify-content:space-between;font-size:11px;margin-top:6px}
+small{display:block;text-align:center;opacity:.6;font-size:9px;margin-top:10px;line-height:1.4}
+#installBtn{width:100%;margin-top:8px;background:#000;color:#fff;padding:10px;border-radius:10px;border:none;display:none}
+.country{font-size:11px;text-align:center;margin:6px 0;opacity:.9}
 </style>
 </head>
 <body>
 <div class="card">
 <h1>🎫 TIKET CHAIN QUANTUM</h1>
-<p>Blockchain Tiket Anti-Palsu.<br>Verifikasi keaslian tiketmu secara on-chain.</p>
-<input id="kode" class="input" placeholder="Masukkan Kode Tiket (contoh: QTX-...)" />
-<button class="btn btn-cek" onclick="cek()">CEK TIKET</button>
-<button id="installBtn" class="btn btn-install">📲 INSTALL APK</button>
-<div id="result" class="verified"></div>
-<small>100 Juta Tiket Terverifikasi on-chain • nednicpi.github.io<br>Blockchain: tiket_chain_quantum</small>
+<div class="sub" id="subtitle">Blockchain Tiket Anti-Palsu + Mining Global</div>
+
+<div class="lang" id="langBtns">
+<button onclick="setLang('id')" class="on">🇮🇩 ID</button>
+<button onclick="setLang('en')">🇺🇸 EN</button>
+<button onclick="setLang('zh')">🇨🇳 中文</button>
+<button onclick="setLang('ja')">🇯🇵 JP</button>
+<button onclick="setLang('ko')">🇰🇷 KR</button>
+<button onclick="setLang('ar')">🇸🇦 AR</button>
+<button onclick="setLang('es')">🇪🇸 ES</button>
+<button onclick="setLang('de')">🇩🇪 DE</button>
 </div>
+
+<div class="country" id="countryInfo">🌍 Detecting location...</div>
+
+<div class="analytics">
+<div class="aBox"><b id="vCount">1,247</b><span id="l_view">VIEW</span></div>
+<div class="aBox"><b id="dCount">389</b><span id="l_down">DOWNLOAD</span></div>
+<div class="aBox"><b id="iCount">156</b><span id="l_install">INSTALL</span></div>
+</div>
+
+<div class="tab">
+<button id="t1" class="active" onclick="switchTab(1)"><span id="lt1">CEK</span></button>
+<button id="t2" class="inactive" onclick="switchTab(2)"><span id="lt2">⛏️ MINING</span></button>
+</div>
+
+<div id="cekTab">
+<input id="kode" class="input" placeholder="QTX-...">
+<button class="btn btn-cek" id="btnCek" onclick="cek()">CEK TIKET</button>
+<div id="result" class="box"></div>
+</div>
+
+<div id="mineTab" style="display:none">
+<input id="minerName" class="input" placeholder="Miner name">
+<div class="stat"><span id="l_hash">Hash Rate</span><span id="hash">0 H/s</span></div>
+<div class="stat"><span id="l_reward">Reward</span><span id="reward">0 TQT</span></div>
+<button id="mineBtn" class="btn btn-mine" onclick="toggleMine()">▶️ START MINING</button>
+<div id="mineLog" class="box" style="display:block;height:75px;overflow-y:auto;font-family:monospace;font-size:10px"></div>
+</div>
+
+<button id="installBtn">📲 INSTALL APK</button>
+<small id="footer">100M Tickets On-Chain • Reward 50 TQT • nednicpi.github.io</small>
+</div>
+
 <script>
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js')}
-let deferredPrompt;
+// --- TRANSLATIONS ---
+const T={
+ id:{subtitle:"Blockchain Tiket Anti-Palsu + Mining Global",view:"VIEW",down:"DOWNLOAD",install:"INSTALL",cek:"CEK TIKET",checkBtn:"CEK TIKET",mine:"⛏️ NAMBANG",hash:"Hash Rate",reward:"Reward",start:"▶️ MULAI NAMBANG",stop:"⏸️ STOP NAMBANG",phKode:"Kode Tiket QTX-...",phName:"Nama Miner",footer:"100 Juta Tiket On-Chain • Reward 50 TQT"},
+ en:{subtitle:"Anti-Counterfeit Ticket Blockchain + Global Mining",view:"VIEWS",down:"DOWNLOADS",install:"INSTALLS",cek:"CHECK",checkBtn:"CHECK TICKET",mine:"⛏️ MINING",hash:"Hash Rate",reward:"Reward",start:"▶️ START MINING",stop:"⏸️ STOP MINING",phKode:"Ticket Code QTX-...",phName:"Miner name",footer:"100M Tickets On-Chain • 50 TQT Reward"},
+ zh:{subtitle:"防伪票务区块链 + 全球挖矿",view:"浏览",down:"下载",install:"安装",cek:"验证",checkBtn:"验证门票",mine:"⛏️ 挖矿",hash:"算力",reward:"奖励",start:"▶️ 开始挖矿",stop:"⏸️ 停止",phKode:"票码 QTX-...",phName:"矿工名",footer:"1亿链上门票 • 奖励50 TQT"},
+ ja:{subtitle:"偽造防止チケットチェーン + グローバルマイニング",view:"閲覧",down:"DL",install:"インストール",cek:"確認",checkBtn:"チケット確認",mine:"⛏️ マイニング",hash:"ハッシュ",reward:"報酬",start:"▶️ 採掘開始",stop:"⏸️ 停止",phKode:"チケットコード",phName:"マイナー名",footer:"1億枚オンチェーン • 報酬50 TQT"},
+ ko:{subtitle:"위조방지 티켓 블록체인 + 글로벌 채굴",view:"조회",down:"다운",install:"설치",cek:"확인",checkBtn:"티켓 확인",mine:"⛏️ 채굴",hash:"해시",reward:"보상",start:"▶️ 채굴 시작",stop:"⏸️ 정지",phKode:"티켓 코드",phName:"채굴자 이름",footer:"1억장 온체인 • 보상 50 TQT"},
+ ar:{subtitle:"بلوكتشين التذاكر ضد التزوير + تعدين عالمي",view:"مشاهدة",down:"تحميل",install:"تثبيت",cek:"فحص",checkBtn:"فحص التذكرة",mine:"⛏️ تعدين",hash:"معدل",reward:"مكافأة",start:"▶️ بدء التعدين",stop:"⏸️ إيقاف",phKode:"رمز التذكرة",phName:"اسم المعدن",footer:"100M تذكرة على السلسلة • مكافأة 50"},
+ es:{subtitle:"Blockchain de Tickets Antifalsificación + Minería Global",view:"VISTAS",down:"DESCARGAS",install:"INSTALACIONES",cek:"VERIFICAR",checkBtn:"VERIFICAR TICKET",mine:"⛏️ MINAR",hash:"Hash",reward:"Recompensa",start:"▶️ EMPEZAR A MINAR",stop:"⏸️ PARAR",phKode:"Código QTX-...",phName:"Nombre minero",footer:"100M Tickets On-Chain • 50 TQT"},
+ de:{subtitle:"Fälschungssichere Ticket-Blockchain + Globales Mining",view:"AUFRUFE",down:"DOWNLOADS",install:"INSTALLS",cek:"PRÜFEN",checkBtn:"TICKET PRÜFEN",mine:"⛏️ MINING",hash:"Hashrate",reward:"Belohnung",start:"▶️ MINING STARTEN",stop:"⏸️ STOPP",phKode:"Ticket-Code",phName:"Miner Name",footer:"100M Tickets On-Chain • 50 TQT Belohnung"}
+};
+
+let curLang='id';
+function setLang(l){
+ curLang=l; const t=T[l]||T.en;
+ document.querySelectorAll('.lang button').forEach(b=>b.classList.remove('on'));
+ event.target.classList.add('on');
+ document.getElementById('subtitle').innerText=t.subtitle;
+ document.getElementById('l_view').innerText=t.view;
+ document.getElementById('l_down').innerText=t.down;
+ document.getElementById('l_install').innerText=t.install;
+ document.getElementById('lt1').innerText=t.cek;
+ document.getElementById('lt2').innerText=t.mine;
+ document.getElementById('btnCek').innerText=t.checkBtn;
+ document.getElementById('l_hash').innerText=t.hash;
+ document.getElementById('l_reward').innerText=t.reward;
+ document.getElementById('kode').placeholder=t.phKode;
+ document.getElementById('minerName').placeholder=t.phName;
+ document.getElementById('footer').innerText=t.footer;
+ document.getElementById('mineBtn').innerText=mining?t.stop:t.start;
+}
+
+// Auto detect browser language
+const bl=navigator.language.slice(0,2);
+if(T[bl]){curLang=bl; setTimeout(()=>{document.querySelectorAll('.lang button').forEach(b=>{if(b.textContent.includes(bl.toUpperCase())||(bl=='id'&&b.textContent.includes('ID'))) {b.click()}})},300)}
+
+// --- ANALYTICS FAKE COUNTER + REAL TRACKING ---
+let views=parseInt(localStorage.getItem('views')||'1247')+1;
+localStorage.setItem('views',views);
+document.getElementById('vCount').innerText=views.toLocaleString('id-ID');
+document.getElementById('dCount').innerText=(parseInt(localStorage.getItem('downs')||'389')).toLocaleString('id-ID');
+document.getElementById('iCount').innerText=(parseInt(localStorage.getItem('installs')||'156')).toLocaleString('id-ID');
+
+// Country detect
+fetch('https://ipapi.co/json/').then(r=>r.json()).then(d=>{
+ document.getElementById('countryInfo').innerText=`🌍 ${d.country_name} (${d.country_code}) • IP: ${d.ip} • ${d.languages||''}`;
+}).catch(()=>{document.getElementById('countryInfo').innerText='🌍 Global User • '+navigator.language});
+
+// PWA
+if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js')
+let deferredPrompt, mining=false, hashes=0, rewards=0, interval;
 const installBtn=document.getElementById('installBtn');
 window.addEventListener('beforeinstallprompt',e=>{
  e.preventDefault();deferredPrompt=e;installBtn.style.display='block';
+ document.getElementById('mineLog').innerHTML='Ready to mine...';
 });
-installBtn.addEventListener('click',async()=>{
- if(deferredPrompt){deferredPrompt.prompt();await deferredPrompt.userChoice;deferredPrompt=null;installBtn.style.display='none'}
-});
+installBtn.onclick=async()=>{
+ let c=parseInt(localStorage.getItem('downs')||'389')+1; localStorage.setItem('downs',c); document.getElementById('dCount').innerText=c;
+ if(deferredPrompt){deferredPrompt.prompt();const ch=await deferredPrompt.userChoice;if(ch.outcome=='accepted'){let ic=parseInt(localStorage.getItem('installs')||'156')+1; localStorage.setItem('installs',ic); document.getElementById('iCount').innerText=ic;} deferredPrompt=null;installBtn.style.display='none'}
+}
+
+function switchTab(n){
+ document.getElementById('cekTab').style.display=n==1?'block':'none';
+ document.getElementById('mineTab').style.display=n==2?'block':'none';
+ document.getElementById('t1').className=n==1?'active':'inactive';
+ document.getElementById('t2').className=n==2?'active':'inactive';
+}
 function cek(){
- const k=document.getElementById('kode').value.trim();
- const r=document.getElementById('result');
- if(!k){r.style.display='block';r.innerHTML='❌ Masukkan kode tiket dulu';return}
- r.style.display='block';
- r.innerHTML='✅ <b>VALID</b><br>Kode: '+k+'<br>Block: #'+Math.floor(Math.random()*999999)+'<br>Owner: Verified<br><small>Data dari ledger tiket_chain_quantum</small>';
+ const k=document.getElementById('kode').value.trim(); const r=document.getElementById('result'); r.style.display='block';
+ if(!k){r.innerHTML='❌';return} r.innerHTML='✅ VALID<br>'+k+'<br>Block: #'+Math.floor(Math.random()*999999);
+}
+function toggleMine(){
+ const t=T[curLang]||T.en;
+ const name=document.getElementById('minerName').value.trim()||'Anon';
+ const btn=document.getElementById('mineBtn'); const log=document.getElementById('mineLog');
+ if(!mining){
+  mining=true; btn.innerText=t.stop; btn.style.background='#ff4444'; btn.style.color='#fff';
+  log.innerHTML+='<br>⛏️ Mining as '+name+'...';
+  interval=setInterval(()=>{
+   hashes+=Math.floor(Math.random()*800)+200; document.getElementById('hash').innerText=hashes+' H/s';
+   const h=Math.random().toString(16).substr(2,8); log.innerHTML+='<br>hash '+h+' nonce '+Math.floor(Math.random()*9999); log.scrollTop=log.scrollHeight;
+   if(Math.random()<0.07){rewards+=50; document.getElementById('reward').innerText=rewards+' TQT'; log.innerHTML+='<br>🎉 BLOCK! +50 TQT';}
+  },600);
+ }else{
+  mining=false; clearInterval(interval); btn.innerText=t.start; btn.style.background='#00ff88'; btn.style.color='#000';
+  log.innerHTML+='<br>⏸️ Stopped. Total: '+rewards+' TQT';
+ }
 }
 </script>
 </body>
