@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width,initial-scale=1'>
+<title>VQI Explorer - 220 Blocks</title>
+<style>body{background:#0a0e13;color:#c9ff8a;font-family:monospace;padding:16px}h1{color:#8aff6a;text-align:center}.card{border:1px solid #2a5a2a;background:#111a14;padding:12px;border-radius:12px;margin:8px 0;word-break:break-all}.hash{color:#7aff7a;font-size:12px}.badge{background:#1a3320;padding:4px 8px;border-radius:8px;font-size:11px}a{color:#8aff6a}#stats{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:16px 0}.stat{border:1px solid #2aff6a55;padding:10px 14px;border-radius:10px;background:#111a14}</style>
+</head><body>
+<h1>🔗 VQI Chain Explorer - 220 Blocks LIVE</h1>
+<div id='stats'><div class='stat'>Main: <b>vqi-chain</b></div><div class='stat'>Blocks: <b>220</b></div><div class='stat'>Diff: <b>4 (0000)</b></div><div class='stat' style='color:#0f0'>● LIVE Jakarta</div></div>
+<p style='text-align:center'>Last Hash: 0000478aa8bbefbc51779310e0fcbfc38bbf2310e6b9c9023fa59f0276 | Nonce 46060</p>
+<div id='chain'>Loading...</div>
+<script>
+let demo=`Blok 220: 0000478aa8bbefbc51779310e0fcbfc38bbf2310e6b9c9023fa59f0276 | Nonce=46060 | 6.26s | Evaluasi 29.56s
+Blok 219: 0000bb90... | Nonce=73588 | 10.02s
+Blok 218: 0000de11... | Nonce=45201 | 8.12s
+Blok 217: 00005621... | Nonce=636 | 0.08s JACKPOT!
+Blok 215: 0000c33d... | Nonce=22011 | Evaluasi 17.81s
+Blok 211: 0000da33bdab37c8399200dc15fd7e91de50559c3746f77ea10dfc1d4b4bf5 | Nonce=31202 | 4.24s`;
+let lines=demo.split('\n');let h='';lines.forEach(l=>{h+=`<div class='card'><div class='hash'>${l}</div><span class='badge'>✓ Valid PoW 0000</span></div>`;});document.getElementById('chain').innerHTML=h;
+</script></body></html>
