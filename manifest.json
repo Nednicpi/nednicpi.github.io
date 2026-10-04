@@ -1,6 +1,7 @@
 {
-  "name": "TIKET CHAIN QUANTUM",
-  "short_name": "TIKET",
+  "name": "TIKET CHAIN QUANTUM SIMULATOR (Edu)",
+  "short_name": "TIKET SIM",
+  "description": "Simulasi edukasi blockchain ledger lokal. Bukan mining crypto asli. Dibatasi 10 menit per hari untuk menjaga baterai.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#6a11cb",
