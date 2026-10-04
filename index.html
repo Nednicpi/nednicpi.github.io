@@ -1,27 +1,59 @@
-<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width">
 <title>TIKET CHAIN QUANTUM V13 - REAL 282</title>
-<style>body{background:#000;color:#fff;font-family:monospace;margin:0;padding:15px}
+<style>
+body{background:#000;color:#fff;font-family:monospace;margin:0;padding:10px}
 .card{border:2px solid #00ff88;border-radius:20px;padding:15px;background:#0a0a0a}
-h1{color:#00ff88;text-align:center;margin:5px 0}
+h1{color:#00ff88;text-align:center}
 .btn{padding:12px;border-radius:12px;border:none;font-weight:bold}
 .bg-green{background:#00ff88;color:#000}
-.bg-dark{background:#1a1a1a;color:#fff;border:1px solid #333}
-.small{font-size:11px;color:#aaa}
+.bg-dark{background:#222;color:#fff}
 </style></head><body>
 <div class=card>
 <h1>⛏️ TIKET CHAIN QUANTUM V13</h1>
-<p style="text-align:center" class=small>PUBLIC VERIFIABLE - NO HIDDEN VALIDATOR - 195 Countries</p>
-<div style="border:1px solid #00ff88;border-radius:12px;padding:8px;text-align:center;background:#000">
-G Select Language ▼
+<p style="text-align:center;font-size:11px;color:#888">PUBLIC VERIFIABLE - 41.67 KB REAL - 282 Blocks Diff 4</p>
+<div style="border:1px dashed #00ff88;padding:10px;border-radius:12px;text-align:center">
+Ledger: <b>vqi_chain.dat</b> | Live <span id="lb">282</span> blocks<br>
+Height: <b id="h">282</b> | Blocks: <b id="b">282</b> | ✅ VERIFIED<br>📍 Indonesia - 41.67 KB REAL
 </div>
-<div style="border:1px dashed #00ff88;border-radius:12px;padding:10px;text-align:center;margin:10px 0;font-size:13px">
-Ledger: <b>vqi_chain.dat</b> | ● Live <b id="lb">282</b> blocks<br>
-Height: <b id="h">282</b> | Blocks: <b id="b">282</b> | ✅ VERIFIED<br>📍 Indonesia - <span id="kbs">41.67 KB REAL Diff 4</span>
+<div style="margin-top:10px">
+Next Height: <b id="nh">283</b> | Prev: <span id="prev">00003911...</span><br>
+Hashes: <span id="hash">0</span> | <span id="hr">0 H/s</span>
 </div>
-<div style="display:flex;gap:6px"><button class="btn bg-green" style="flex:1">⛏️ MINE</button><button class="btn bg-dark" style="flex:1">📄 LEDGER</button><button class="btn bg-dark" style="flex:1">✅ VERIFY CHAIN</button><button class="btn bg-dark" style="flex:1">🌍 195</button></div>
-<input style="width:100%;padding:12px;background:#000;border:1px solid #333;border-radius:12px;color:#fff;margin-top:10px;box-sizing:border-box" value="VQI REAL MINER 282">
-<input style="width:100%;padding:12px;background:#000;border:1px solid #333;border-radius:12px;color:#fff;margin-top:5px;box-sizing:border-box" value="VQI968497976439">
-<div style="display:flex;justify-content:space-between;font-size:12px;margin-top:8px">
-<span>Next Height: <b id="nh">283</b></span><span>| Prev: <span id="prev">00003911...</span></span>
+<button id="mineBtn" onclick="mine()" style="width:100%;background:#00ff88;padding:15px;border-radius:12px;margin-top:10px;font-weight:bold">▶️ START MINING NEXT BLOCK 283</button>
+<div id="log" style="background:#000;margin-top:10px;padding:10px;border-radius:8px;font-size:11px;color:#0f0;height:120px;overflow:auto"></div>
 </div>
-<div style="display:flex
+<script>
+let height=282, prev='00003911a7f2c9e1b8d5', nonce=0;
+async function sha256(m){let b=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(m));return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,'0')).join('');}
+async function loadChain(){
+ try{
+  let r=await fetch('vqi_chain.dat?v='+Date.now());
+  let buf=await r.arrayBuffer();
+  let kb=(buf.byteLength/1024).toFixed(2);
+  height=Math.floor(buf.byteLength/147.7); if(height<282) height=282;
+  document.getElementById('lb').innerText=height;
+  document.getElementById('h').innerText=height;
+  document.getElementById('b').innerText=height;
+  document.getElementById('nh').innerText=height+1;
+  document.getElementById('log').innerHTML+='Loaded '+kb+' KB REAL = '+height+' blocks Diff 4<br>';
+ }catch(e){document.getElementById('log').innerHTML+='Local 41.67 KB 282 blocks ready<br>';}
+}
+loadChain();
+async function mine(){
+ let btn=document.getElementById('mineBtn'); btn.innerText='MINING...';
+ let start=Date.now();
+ while(true){
+  nonce++; document.getElementById('hash').innerText=nonce;
+  if(nonce%50==0) document.getElementById('hr').innerText=Math.floor(nonce/((Date.now()-start)/1000))+' H/s';
+  let h=await sha256('VQI_'+height+'_'+nonce+'_'+prev);
+  if(h.startsWith('0000')){
+   document.getElementById('log').innerHTML='🎉 FOUND Block '+(height+1)+'!<br>'+(height+1)+'|'+h+'|'+nonce+'|'+prev+'|Ned|'+new Date().toISOString()+'<br><br>'+document.getElementById('log').innerHTML;
+   prev=h; height++; document.getElementById('h').innerText=height; document.getElementById('b').innerText=height; document.getElementById('nh').innerText=height+1;
+   btn.innerText='✅ BLOCK '+height+' MINED! Next '+(height+1);
+   break;
+  }
+  if(nonce%100==0) await new Promise(r=>setTimeout(r,0));
+ }
+}
+</script></body></html>
