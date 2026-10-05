@@ -2,7 +2,7 @@
   <img src="logo_vqi.png" width="110" style="filter:drop-shadow(0 0 10px gold)">
 </p>
 <h1 align="center">VQI GLOBAL - Enterprise Platform</h1>
-<p align="center">Enterprise Crypto Mining • Validation • Security Platform | 1M Users / 1 Year Ready</p>
+<p align="center">Enterprise Voucher Valuable Mining • Validation • Security Platform | 1M Users / 1 Year Ready</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Status-Verified%20✅-brightgreen">
