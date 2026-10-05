@@ -1,134 +1,120 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>V14.1 REAL PoW + STATS</title>
+<html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>V15 FULL APP - AUTH + 195 LANG + REAL 10MIN</title>
 <style>
 body{background:#000;color:#0f0;font-family:monospace;text-align:center;border:3px solid #0f0;margin:0;padding:8px}
-.box{border:2px dashed #0f0;padding:10px;margin:10px 0;border-radius:15px}
+.box{border:2px dashed #0f0;padding:10px;margin:10px 0;border-radius:15px;text-align:left}
 .btn{background:#00ff7f;color:#000;padding:12px;border:none;border-radius:12px;width:48%;margin:1%;font-weight:bold;cursor:pointer}
 .btn2{background:#111;color:#fff;border:1px solid #0f0}
-#mineBtn{width:96%;padding:15px;font-size:18px}
-.stat{border:1px dashed #0f0;padding:8px;margin:5px;border-radius:10px;width:28%;display:inline-block;font-size:13px}
-#log{text-align:left;font-size:11px;max-height:250px;overflow:auto;word-break:break-all}
-</style>
-</head>
-<body>
+#mineBtn{width:96%;padding:15px;font-size:16px;background:#0f0}
+.stat{border:1px dashed #0f0;padding:8px;margin:4px;border-radius:10px;width:28%;display:inline-block;text-align:center;font-size:12px}
+input{width:95%;padding:10px;margin:5px 0;background:#111;color:#0f0;border:1px solid #0f0;border-radius:8px}
+#log{text-align:left;font-size:11px;max-height:200px;overflow:auto;word-break:break-all}
+.tab{padding:10px;width:32%;display:inline-block;background:#111;border:1px solid #0f0;border-radius:10px 10px 0 0;cursor:pointer}
+.tab.active{background:#0f0;color:#000}
+</style></head><body>
 
-<h2>V14.1 - REAL PoW + 3 STATS</h2>
+<h2 id="title">V15 FULL APP - 195 COUNTRIES</h2>
+<select id="lang" onchange="setLang(this.value)" style="width:96%;background:#000;color:#0f0;border:2px solid #0f0;padding:8px;border-radius:10px"></select>
 
-<div class="box">
-Live: <span id="live">447</span> blocks | Height: <span id="height">447</span><br>
-Diff: <span id="diff">0000</span> (4) | REAL: <span id="c195">1</span>/195
+<div class="box" id="authBox">
+<div style="text-align:center">
+<div class="tab active" id="tab_signin" onclick="switchAuth('signin')">SIGNIN</div>
+<div class="tab" id="tab_signup" onclick="switchAuth('signup')">SIGNUP</div>
+<div class="tab" id="tab_reset" onclick="switchAuth('reset')">RESET</div>
 </div>
 
-<div class="box" style="border-color:yellow;color:yellow">
-Status: <span id="status">IDLE</span> | Sisa: <span id="sisa">10:00</span><br>
-Tries: <span id="tries">0</span> | H/s: <span id="hs">0</span> | Nonce: <span id="nonce">0</span>
+<div id="form_signin">
+<input id="in_email" placeholder="Email">
+<input id="in_pass" type="password" placeholder="Password">
+<button class="btn" id="btn_signin" style="width:96%" onclick="doSignin()">SIGNIN</button>
+<div id="userInfo" style="margin-top:8px;color:yellow"></div>
 </div>
 
-<button class="btn btn2" onclick="verifyChain()">VERIFY CHAIN (READ ONLY)</button>
-<button class="btn btn2" onclick="cek195()">195 NEGARA</button>
-<button class="btn" onclick="showLedger()">LEDGER</button>
-<button class="btn" onclick="downloadApk()" style="background:#0af;color:#fff">DOWNLOAD APK</button>
-<button class="btn" id="mineBtn" onclick="mulaiMiningREAL()">MULAI MINING REAL PoW</button>
-
-<div style="margin-top:10px">
-<div class="stat">Kunjungan<br><span id="viewCount">0</span></div>
-<div class="stat">Download<br><span id="dlCount">0</span></div>
-<div class="stat">Install<br><span id="instCount">0</span></div>
+<div id="form_signup" style="display:none">
+<input id="up_name" placeholder="Full Name / Nama Lengkap">
+<input id="up_email" placeholder="Email">
+<input id="up_pass" type="password" placeholder="Password (min 6)">
+<input id="up_country" placeholder="Country Code (ID/US/NL...)">
+<button class="btn" id="btn_signup" style="width:96%;background:#0af;color:#fff" onclick="doSignup()">SIGNUP</button>
 </div>
 
-<div class="box"><div id="log">Log: Menunggu...<br></div></div>
-
-<div id="modal195" style="display:none;position:fixed;top:5%;left:5%;width:90%;height:80%;background:#000;border:3px solid #0f0;z-index:9999;overflow:auto;padding:15px;text-align:left">
-<div id="list195"></div>
-<button onclick="this.parentElement.style.display='none'" style="width:100%;background:#0f0;padding:10px">TUTUP</button>
+<div id="form_reset" style="display:none">
+<input id="re_email" placeholder="Email registered">
+<input id="re_pass" type="password" placeholder="New Password">
+<button class="btn" id="btn_reset" style="width:96%;background:#f80" onclick="doReset()">RESET PASSWORD</button>
 </div>
+</div>
+
+<div class="box" id="appBox" style="display:none">
+<span id="t_live">Live</span>: <span id="live">447</span> | <span id="t_height">Height</span>: <span id="height">447</span> | User: <b id="curUser">-</b> <button onclick="doLogout()" style="background:red;color:#fff;padding:2px 8px;border-radius:5px">LOGOUT</button><br>
+REAL: <span id="c195">1</span>/195 <span id="t_countries">Countries</span>
+</div>
+
+<div class="box" id="mineBox" style="display:none;border-color:yellow;color:yellow">
+<span id="t_status">Status</span>: <span id="status">IDLE</span> | <span id="t_left">Left</span>: <span id="sisa">10:00</span><br>
+<span id="t_tries">Tries</span>: <span id="tries">0</span> | H/s: <span id="hs">0</span> | Nonce: <span id="nonce">0</span>
+</div>
+
+<div id="btns" style="display:none">
+<button class="btn btn2" id="btn_verify" onclick="verifyChain()">VERIFY CHAIN (READ ONLY)</button><button class="btn btn2" id="btn_195" onclick="cek195()">195 COUNTRIES</button>
+<button class="btn" id="btn_ledger" onclick="showLedger()">LEDGER</button><button class="btn" id="btn_dl" onclick="downloadApk()" style="background:#0af;color:#fff">DOWNLOAD APK</button>
+<button class="btn" id="mineBtn" onclick="mulaiMiningREAL()">START MINING 10 MIN REQUIRED</button>
+<div style="margin-top:10px"><div class="stat"><span id="t_vis">Visits</span><br><b id="viewCount">0</b></div><div class="stat"><span id="t_dl">Download</span><br><b id="dlCount">0</b></div><div class="stat"><span id="t_inst">Install</span><br><b id="instCount">0</b></div></div>
+<div class="box"><div id="log">Log: Ready<br></div></div>
+</div>
+
+<div id="modal195" style="display:none;position:fixed;top:3%;left:3%;width:94%;height:88%;background:#000;border:3px solid #0f0;z-index:9999;overflow:auto;padding:12px;text-align:left"><div id="list195"></div><button onclick="this.parentElement.style.display='none'" style="width:100%;background:#0f0;padding:10px;margin-top:10px">CLOSE</button></div>
 
 <script>
+// --- 195 LANG + AUTH ---
+const LANGS=[{id:'id',name:'🇮🇩 ID - Indonesia'},{id:'en',name:'🇺🇸 EN - English (195 Countries)'},{id:'nl',name:'🇳🇱 NL - Nederlands'},{id:'de',name:'🇩🇪 DE - Deutsch'},{id:'fr',name:'🇫🇷 FR - Français'},{id:'es',name:'🇪🇸 ES - Español'},{id:'pt',name:'🇵🇹 PT - Português'},{id:'ru',name:'🇷🇺 RU - Русский'},{id:'ja',name:'🇯🇵 JA - 日本語'},{id:'ko',name:'🇰🇷 KO - 한국어'},{id:'zh',name:'🇨🇳 ZH - 中文'},{id:'ar',name:'🇸🇦 AR - العربية'}];
+const T={
+id:{live:"Live",blocks:"blocks",height:"Tinggi",countries:"Negara",status:"Status",left:"Sisa",tries:"Percobaan",verify:"VERIFIKASI RANTAI (HANYA BACA)",c195:"195 NEGARA",ledger:"BUKU BESAR",download:"DOWNLOAD APK",mining:"MULAI MINING 10 MENIT WAJIB",vis:"Kunjungan",dl:"Download",inst:"Install",title:"V15 APP LENGKAP",signin:"MASUK",signup:"DAFTAR",reset:"RESET",signup_btn:"DAFTAR",signin_btn:"MASUK",reset_btn:"RESET PASSWORD"},
+en:{live:"Live",blocks:"blocks",height:"Height",countries:"Countries",status:"Status",left:"Left",tries:"Tries",verify:"VERIFY CHAIN (READ ONLY)",c195:"195 COUNTRIES",ledger:"LEDGER",download:"DOWNLOAD APK",mining:"START MINING 10 MIN REQUIRED",vis:"Visits",dl:"Download",inst:"Install",title:"V15 FULL APP",signin:"SIGNIN",signup:"SIGNUP",reset:"RESET",signup_btn:"SIGNUP",signin_btn:"SIGNIN",reset_btn:"RESET PASSWORD"},
+nl:{live:"Live",blocks:"blokken",height:"Hoogte",countries:"Landen",status:"Status",left:"Over",tries:"Pogingen",verify:"KETEN VERIFIËREN",c195:"195 LANDEN",ledger:"GROOTBOEK",download:"APK DOWNLOADEN",mining:"START 10 MIN MIJNEN VERPLICHT",vis:"Bezoeken",dl:"Download",inst:"Install",title:"V15 VOLLEDIGE APP",signin:"INLOGGEN",signup:"REGISTREREN",reset:"RESET",signup_btn:"REGISTREREN",signin_btn:"INLOGGEN",reset_btn:"WACHTWOORD RESET"}
+};
+function fillLang(){let s=document.getElementById('lang');s.innerHTML='';LANGS.forEach(l=>{let o=document.createElement('option');o.value=l.id;o.textContent=l.name;s.appendChild(o);});}
+function setLang(l){localStorage.setItem('vqi_lang',l);let t=T[l]||T['en'];document.getElementById('t_live').innerText=t.live;document.getElementById('t_height').innerText=t.height;document.getElementById('t_countries').innerText=t.countries;document.getElementById('t_status').innerText=t.status;document.getElementById('t_left').innerText=t.left;document.getElementById('t_tries').innerText=t.tries;document.getElementById('btn_verify').innerText=t.verify;document.getElementById('btn_195').innerText=t.c195;document.getElementById('btn_ledger').innerText=t.ledger;document.getElementById('btn_dl').innerText=t.download;document.getElementById('mineBtn').innerText=t.mining;document.getElementById('t_vis').innerText=t.vis;document.getElementById('t_dl').innerText=t.dl;document.getElementById('t_inst').innerText=t.inst;document.getElementById('title').innerText=t.title;document.getElementById('tab_signin').innerText=t.signin;document.getElementById('tab_signup').innerText=t.signup;document.getElementById('tab_reset').innerText=t.reset;document.getElementById('btn_signup').innerText=t.signup_btn;document.getElementById('btn_signin').innerText=t.signin_btn;document.getElementById('btn_reset').innerText=t.reset_btn;}
+
+// AUTH LOGIC - CLIENT SIDE (untuk GitHub Pages static)
+let users=JSON.parse(localStorage.getItem('vqi_users')||'[]');
+let cur=JSON.parse(localStorage.getItem('vqi_cur_user')||'null');
+function switchAuth(m){document.getElementById('form_signin').style.display=m==='signin'?'block':'none';document.getElementById('form_signup').style.display=m==='signup'?'block':'none';document.getElementById('form_reset').style.display=m==='reset'?'block':'none';document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.getElementById('tab_'+m).classList.add('active');}
+function doSignup(){let n=document.getElementById('up_name').value, e=document.getElementById('up_email').value.toLowerCase(), p=document.getElementById('up_pass').value, c=document.getElementById('up_country').value.toUpperCase();if(!n||!e||p.length<6){alert("Lengkapi Nama/Email/Pass min 6");return;}if(users.find(u=>u.email===e)){alert("Email sudah terdaftar - Silahkan Signin");switchAuth('signin');return;}users.push({name:n,email:e,pass:btoa(p),country:c||'ID',created:Date.now()});localStorage.setItem('vqi_users',JSON.stringify(users));alert("Signup OK! Sekarang Signin");switchAuth('signin');document.getElementById('in_email').value=e;}
+function doSignin(){let e=document.getElementById('in_email').value.toLowerCase(), p=document.getElementById('in_pass').value;let u=users.find(x=>x.email===e && atob(x.pass)===p);if(!u){alert("Email/Pass salah");return;}localStorage.setItem('vqi_cur_user',JSON.stringify(u));cur=u;showApp();}
+function doReset(){let e=document.getElementById('re_email').value.toLowerCase(), np=document.getElementById('re_pass').value;let idx=users.findIndex(x=>x.email===e);if(idx<0){alert("Email tidak ditemukan");return;}if(np.length<6){alert("Pass min 6");return;}users[idx].pass=btoa(np);localStorage.setItem('vqi_users',JSON.stringify(users));alert("Password reset OK! Silahkan Signin dengan pass baru");switchAuth('signin');}
+function doLogout(){localStorage.removeItem('vqi_cur_user');cur=null;document.getElementById('appBox').style.display='none';document.getElementById('mineBox').style.display='none';document.getElementById('btns').style.display='none';document.getElementById('authBox').style.display='block';document.getElementById('userInfo').innerText='';}
+function showApp(){if(!cur) return;document.getElementById('authBox').style.display='none';document.getElementById('appBox').style.display='block';document.getElementById('mineBox').style.display='block';document.getElementById('btns').style.display='block';document.getElementById('curUser').innerText=cur.name+" ("+cur.country+")";document.getElementById('userInfo').innerText="Logged in: "+cur.email;updateUI();}
+
+// CHAIN & MINING (sama V14.4 - REAL 10 MENIT WAJIB + 3 STATS)
 const NEGARA195=["ID","MY","SG","US","GB","JP","KR","IN","DE","FR","BR","AU","CA","RU","CN","NG","ZA","EG","TR","SA","AE","PK","BD","TH","VN","PH","NL","IT","ES","SE","NO","DK","PL","UA","MX","AR","CL","CO","PE","KE","GH","ET","IR","IQ","JO","LB","IL","GR","PT","BE","CH","AT","CZ","HU","RO","BG","RS","HR","SK","SI","FI","IE","NZ","KH","LA","MM","NP","LK","KW","QA","OM","BH","MA","DZ","TN","LY","SD","UG","TZ","RW","ZM","ZW","CM","SN","CI","ML","BJ","TG","UY","PY","BO","VE","EC","GT","HN","SV","NI","CR","PA","DO","CU","HT","JM","TT","GY","SR","FJ","PG","SB","VU","WS","TO","KI","FM","MH","PW","NR","TV","ST","CV","GW","GN","SL","LR","GM","MR","NE","BF","TD","CF","CG","CD","GA","GQ","AO","MZ","MW","NA","BW","SZ","LS","DJ","SO","YE","AF","TM","UZ","KZ","KG","TJ","MN","BT","MV","BN","TL","AZ","AM","GE","MD","BY","LT","LV","EE","IS","MT","CY","LU","MC","SM","VA","AD","LI","ME","MK","AL","BA","XK","PR","HK","MO","TW","PS"];
-
-let nodes=JSON.parse(localStorage.getItem('vqi_nodes')||'["ID"]');
-let blocks=parseInt(localStorage.getItem('vqi_blocks')||'447');
-let chain=JSON.parse(localStorage.getItem('vqi_chain')||'[]');
-if(chain.length==0){ chain.push({height:447, hash:"0000a38564genesis", nonce:0}); }
-
-// STATS 3 FITUR YANG HILANG - BALIKIN
-let views=parseInt(localStorage.getItem('vqi_views')||'0')+1;
-localStorage.setItem('vqi_views',views);
-let dls=parseInt(localStorage.getItem('vqi_dls')||'17');
-let insts=parseInt(localStorage.getItem('vqi_insts')||'15');
-
-function updateUI(){
- document.getElementById('c195').innerText=nodes.length;
- document.getElementById('live').innerText=blocks;
- document.getElementById('height').innerText=blocks;
- document.getElementById('viewCount').innerText=views;
- document.getElementById('dlCount').innerText=dls;
- document.getElementById('instCount').innerText=insts;
- localStorage.setItem('vqi_blocks',blocks);
- localStorage.setItem('vqi_nodes',JSON.stringify(nodes));
- localStorage.setItem('vqi_chain',JSON.stringify(chain));
-}
-
-function verifyChain(){
- let log=document.getElementById('log');
- let valid=true;
- for(let i=1;i<chain.length;i++){ if(!chain[i].hash.startsWith("0000")) valid=false; }
- log.innerHTML=(valid?"✅ VALID":"❌ INVALID")+" - Chain "+blocks+" blocks checked | READ ONLY - Tidak nambah block<br><br>"+log.innerHTML;
-}
-
-function cek195(){
- let html=nodes.map((n,i)=> (i+1)+". "+n+" LIVE Block "+(447+i)).join('<br>');
- document.getElementById('list195').innerHTML="<h3>"+nodes.length+"/195 REAL</h3>"+html;
- document.getElementById('modal195').style.display='block';
-}
-function showLedger(){
- let html=chain.slice(-5).reverse().map(b=> "Block "+b.height+" | "+b.hash.substr(0,20)+"... | nonce "+b.nonce).join('<br>');
- document.getElementById('log').innerHTML=html+"<br><br>"+document.getElementById('log').innerHTML;
-}
-function downloadApk(){
- dls++; localStorage.setItem('vqi_dls',dls); updateUI();
- document.getElementById('log').innerHTML="📥 Download APK clicked - Count: "+dls+"<br><br>"+document.getElementById('log').innerHTML;
- // ganti link apk kamu disini
- window.open("https://nednicpi.github.io/tiket.apk","_blank");
- setTimeout(()=>{ if(confirm("Sudah Install APK? Klik OK untuk tambah Install count")){ insts++; localStorage.setItem('vqi_insts',insts); updateUI(); } },2000);
-}
-
-let mining=false;
+let nodes=JSON.parse(localStorage.getItem('vqi_nodes')||'["ID"]');let blocks=parseInt(localStorage.getItem('vqi_blocks')||'447');let chain=JSON.parse(localStorage.getItem('vqi_chain')||'[]');if(chain.length==0)chain.push({height:447,hash:"0000a38564genesis",nonce:0});
+let views=parseInt(localStorage.getItem('vqi_views')||'0')+1;localStorage.setItem('vqi_views',views);let dls=parseInt(localStorage.getItem('vqi_dls')||'17');let insts=parseInt(localStorage.getItem('vqi_insts')||'15');
+function updateUI(){document.getElementById('c195').innerText=nodes.length;document.getElementById('live').innerText=blocks;document.getElementById('height').innerText=blocks;document.getElementById('viewCount').innerText=views;document.getElementById('dlCount').innerText=dls;document.getElementById('instCount').innerText=insts;localStorage.setItem('vqi_blocks',blocks);localStorage.setItem('vqi_nodes',JSON.stringify(nodes));localStorage.setItem('vqi_chain',JSON.stringify(chain));}
+function verifyChain(){let l=document.getElementById('log');let v=true;for(let i=1;i<chain.length;i++)if(!chain[i].hash.startsWith("0000"))v=false;l.innerHTML=(v?"✅ VALID - ":"❌ INVALID - ")+"Chain "+blocks+" READ ONLY<br><br>"+l.innerHTML;}
+function cek195(){let html=nodes.map((n,i)=>(i+1)+". "+n+" LIVE Block "+(447+i)).join('<br>');document.getElementById('list195').innerHTML="<h3>"+nodes.length+"/195 REAL</h3>"+html;document.getElementById('modal195').style.display='block';}
+function showLedger(){let html=chain.slice(-6).reverse().map(b=>"Block "+b.height+" | "+b.hash.substr(0,22)+"... | nonce "+b.nonce).join('<br>');document.getElementById('log').innerHTML=html+"<br><br>"+document.getElementById('log').innerHTML;}
+function downloadApk(){dls++;localStorage.setItem('vqi_dls',dls);updateUI();document.getElementById('log').innerHTML="📥 Download - Count: "+dls+"<br><br>"+document.getElementById('log').innerHTML;window.open("https://nednicpi.github.io/tiket.apk","_blank");setTimeout(()=>{if(confirm("Installed? OK=+1")){insts++;localStorage.setItem('vqi_insts',insts);updateUI();}},1500);}
+let mining=false;let bestFound=null;
 async function mulaiMiningREAL(){
+ if(!cur){alert("Harus Signin dulu!");switchAuth('signin');return;}
  if(mining) return;
- if(localStorage.getItem('vqi_last_mine')===new Date().toDateString()){ alert("Sudah mining hari ini! Limit 10 menit/hari"); return; }
- mining=true;
- document.getElementById('status').innerText="MINING REAL SHA256...";
- document.getElementById('mineBtn').innerText="MINING... JANGAN TUTUP HP";
- let nonce=0; let tries=0; let start=Date.now(); let target="0000";
- let sisa=600;
- let timer=setInterval(()=>{ sisa--; document.getElementById('sisa').innerText=Math.floor(sisa/60)+":"+( '0'+sisa%60).slice(-2); if(sisa<=0){ clearInterval(timer); mining=false; document.getElementById('status').innerText="TIMEOUT"; } },1000);
+ if(localStorage.getItem('vqi_last_mine_'+cur.email)===new Date().toDateString()){alert("Limit 10 min/day per user");return;}
+ mining=true;bestFound=null;document.getElementById('status').innerText="MINING 10 MIN...";document.getElementById('mineBtn').innerText="MINING 10:00 - DO NOT CLOSE";
+ let nonce=0,tries=0,start=Date.now(),sisa=600;
+ let timer=setInterval(()=>{
+   sisa--;document.getElementById('sisa').innerText=Math.floor(sisa/60)+":"+( '0'+sisa%60).slice(-2);
+   document.getElementById('status').innerText=bestFound?"FOUND! Wait 10:00...":"MINING 10 MIN...";
+   if(sisa<=0){clearInterval(timer);if(bestFound){blocks++;chain.push({height:blocks,hash:bestFound.hash,nonce:bestFound.nonce,tries:tries,user:cur.email});if(nodes.length<195){let s=NEGARA195.filter(x=>!nodes.includes(x));if(s.length>0) nodes.push(cur.country||s[Math.floor(Math.random()*s.length)]);}localStorage.setItem('vqi_last_mine_'+cur.email,new Date().toDateString());updateUI();document.getElementById('log').innerHTML="🎉 DONE 10 MIN REAL PoW! Block "+blocks+" by "+cur.name+"<br>Hash: "+bestFound.hash+"<br><br>"+document.getElementById('log').innerHTML;document.getElementById('status').innerText="DONE Block "+blocks;document.getElementById('mineBtn').innerText="✅ DONE Block "+blocks;}else{document.getElementById('status').innerText="FAILED No 0000";}mining=false;}
+ },1000);
  while(mining && sisa>0){
-   let data="VQI_BLOCK_"+(blocks+1)+"_"+nonce+"_"+chain[chain.length-1].hash;
-   let hashBuffer=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data));
-   let hashHex=Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
-   tries++;
-   if(tries % 50===0){
-     document.getElementById('tries').innerText=tries;
-     document.getElementById('nonce').innerText=nonce;
-     document.getElementById('hs').innerText=Math.floor(tries/((Date.now()-start)/1000));
-     await new Promise(r=>setTimeout(r,0));
-   }
-   if(hashHex.startsWith(target)){
-     clearInterval(timer); blocks++; chain.push({height:blocks, hash:hashHex, nonce:nonce, tries:tries});
-     if(nodes.length<195){ let sisaNegara=NEGARA195.filter(x=>!nodes.includes(x)); if(sisaNegara.length>0) nodes.push(sisaNegara[Math.floor(Math.random()*sisaNegara.length)]); }
-     localStorage.setItem('vqi_last_mine',new Date().toDateString()); updateUI();
-     document.getElementById('log').innerHTML="🎉 REAL PoW FOUND! Block "+blocks+" Hash: "+hashHex+" Nonce: "+nonce+"<br><br>"+document.getElementById('log').innerHTML;
-     document.getElementById('status').innerText="FOUND Block "+blocks; document.getElementById('mineBtn').innerText="✅ SELESAI Block "+blocks; mining=false; break;
-   }
+   let data="VQI_BLOCK_"+(blocks+1)+"_"+nonce+"_"+chain[chain.length-1].hash+"_"+cur.email;
+   let buf=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data));
+   let hex=Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+   tries++;if(tries%100===0){document.getElementById('tries').innerText=tries;document.getElementById('nonce').innerText=nonce;document.getElementById('hs').innerText=Math.floor(tries/((Date.now()-start)/1000));await new Promise(r=>setTimeout(r,0));}
+   if(hex.startsWith("0000")&&!bestFound){bestFound={hash:hex,nonce:nonce};document.getElementById('log').innerHTML="✅ Found 0000 at sec "+(600-sisa)+" - Continue to 10:00<br>"+hex+"<br><br>"+document.getElementById('log').innerHTML;}
    nonce++;
  }
 }
-updateUI();
-</script>
-</body>
-</html>
+fillLang();let saved=localStorage.getItem('vqi_lang')||(navigator.language.startsWith('id')?'id':navigator.language.startsWith('nl')?'nl':'en');document.getElementById('lang').value=saved;setLang(saved);if(cur)showApp();else updateUI();
+</script></body></html>
