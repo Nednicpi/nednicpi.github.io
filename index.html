@@ -3,29 +3,131 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>TIKET CHAIN V13 FINAL</title>
-<style>body{background:#000;color:#0f0;font-family:monospace;text-align:center;border:3px solid #0f0;margin:0;padding:10px}.box{border:2px dashed #0f0;padding:10px;margin:10px 0;border-radius:15px}.btn{background:#00ff7f;color:#000;padding:12px;border:none;border-radius:12px;width:48%;margin:1%;font-weight:bold}.btn2{background:#111;color:#fff;border:1px solid #0f0}#mineBtn{width:96%;padding:15px}.stat{border:1px dashed #0f0;padding:8px;margin:5px;border-radius:10px;width:30%;display:inline-block}</style>
+<title>V14.1 REAL PoW + STATS</title>
+<style>
+body{background:#000;color:#0f0;font-family:monospace;text-align:center;border:3px solid #0f0;margin:0;padding:8px}
+.box{border:2px dashed #0f0;padding:10px;margin:10px 0;border-radius:15px}
+.btn{background:#00ff7f;color:#000;padding:12px;border:none;border-radius:12px;width:48%;margin:1%;font-weight:bold;cursor:pointer}
+.btn2{background:#111;color:#fff;border:1px solid #0f0}
+#mineBtn{width:96%;padding:15px;font-size:18px}
+.stat{border:1px dashed #0f0;padding:8px;margin:5px;border-radius:10px;width:28%;display:inline-block;font-size:13px}
+#log{text-align:left;font-size:11px;max-height:250px;overflow:auto;word-break:break-all}
+</style>
 </head>
 <body>
-<h2>TIKET CHAIN QUANTUM V13 - LIGHT PoW</h2>
-<div class="box">Ledger: vqi_chain.dat | Live <span id="live">447</span> blocks<br>Height: <span id="height">447</span> | Diff: 4 | 0000 | PoW Variable</div>
-<div class="box" style="border-color:yellow;color:yellow">Sisa: <span id="sisa">10:00</span> / 10:00 | Anti-Lag and Play Store Safe</div>
-<button class="btn">BLOCK <span class="bNum">447</span>!</button>
-<button class="btn btn2" onclick="showLedger()">LEDGER</button>
-<button class="btn btn2" onclick="verifyChain()">VERIFY CHAIN</button>
-<button class="btn btn2" onclick="cek195()"><span id="c195">1</span>/195 REAL</button>
-<div>Next: <span id="next">448</span> | Tries: <span id="tries">0</span> | <span id="hs">0</span> H/s | Nonce: <span id="nonce">0</span></div>
-<button class="btn" id="mineBtn" onclick="mulaiMining()">MULAI MINING PoW ACAK (10 MENIT/HARI)</button>
-<div class="box"><div id="log"></div></div>
-<div id="modal195" style="display:none;position:fixed;top:5%;left:5%;width:90%;height:85%;background:#000;border:3px solid #0f0;z-index:9999;overflow:auto;padding:15px;text-align:left"><h3 style="color:#0f0;text-align:center">REAL NODES 195 NEGARA</h3><div id="list195"></div><button onclick="this.parentElement.style.display='none'" style="width:100%;background:#0f0;padding:12px">TUTUP</button></div>
+
+<h2>V14.1 - REAL PoW + 3 STATS</h2>
+
+<div class="box">
+Live: <span id="live">447</span> blocks | Height: <span id="height">447</span><br>
+Diff: <span id="diff">0000</span> (4) | REAL: <span id="c195">1</span>/195
+</div>
+
+<div class="box" style="border-color:yellow;color:yellow">
+Status: <span id="status">IDLE</span> | Sisa: <span id="sisa">10:00</span><br>
+Tries: <span id="tries">0</span> | H/s: <span id="hs">0</span> | Nonce: <span id="nonce">0</span>
+</div>
+
+<button class="btn btn2" onclick="verifyChain()">VERIFY CHAIN (READ ONLY)</button>
+<button class="btn btn2" onclick="cek195()">195 NEGARA</button>
+<button class="btn" onclick="showLedger()">LEDGER</button>
+<button class="btn" onclick="downloadApk()" style="background:#0af;color:#fff">DOWNLOAD APK</button>
+<button class="btn" id="mineBtn" onclick="mulaiMiningREAL()">MULAI MINING REAL PoW</button>
+
+<div style="margin-top:10px">
+<div class="stat">Kunjungan<br><span id="viewCount">0</span></div>
+<div class="stat">Download<br><span id="dlCount">0</span></div>
+<div class="stat">Install<br><span id="instCount">0</span></div>
+</div>
+
+<div class="box"><div id="log">Log: Menunggu...<br></div></div>
+
+<div id="modal195" style="display:none;position:fixed;top:5%;left:5%;width:90%;height:80%;background:#000;border:3px solid #0f0;z-index:9999;overflow:auto;padding:15px;text-align:left">
+<div id="list195"></div>
+<button onclick="this.parentElement.style.display='none'" style="width:100%;background:#0f0;padding:10px">TUTUP</button>
+</div>
+
 <script>
 const NEGARA195=["ID","MY","SG","US","GB","JP","KR","IN","DE","FR","BR","AU","CA","RU","CN","NG","ZA","EG","TR","SA","AE","PK","BD","TH","VN","PH","NL","IT","ES","SE","NO","DK","PL","UA","MX","AR","CL","CO","PE","KE","GH","ET","IR","IQ","JO","LB","IL","GR","PT","BE","CH","AT","CZ","HU","RO","BG","RS","HR","SK","SI","FI","IE","NZ","KH","LA","MM","NP","LK","KW","QA","OM","BH","MA","DZ","TN","LY","SD","UG","TZ","RW","ZM","ZW","CM","SN","CI","ML","BJ","TG","UY","PY","BO","VE","EC","GT","HN","SV","NI","CR","PA","DO","CU","HT","JM","TT","GY","SR","FJ","PG","SB","VU","WS","TO","KI","FM","MH","PW","NR","TV","ST","CV","GW","GN","SL","LR","GM","MR","NE","BF","TD","CF","CG","CD","GA","GQ","AO","MZ","MW","NA","BW","SZ","LS","DJ","SO","YE","AF","TM","UZ","KZ","KG","TJ","MN","BT","MV","BN","TL","AZ","AM","GE","MD","BY","LT","LV","EE","IS","MT","CY","LU","MC","SM","VA","AD","LI","ME","MK","AL","BA","XK","PR","HK","MO","TW","PS"];
-let nodes=JSON.parse(localStorage.getItem('vqi_nodes')||'["ID"]');let blocks=parseInt(localStorage.getItem('vqi_blocks')||'447');let mining=false;let interval=null;
-function updateUI(){document.getElementById('c195').innerText=nodes.length;document.getElementById('live').innerText=blocks;document.getElementById('height').innerText=blocks;document.querySelectorAll('.bNum').forEach(e=>e.innerText=blocks);document.getElementById('next').innerText=blocks+1;localStorage.setItem('vqi_blocks',blocks);localStorage.setItem('vqi_nodes',JSON.stringify(nodes));}
-function verifyChain(){let logs=document.getElementById('log');logs.innerHTML="Chain OK - "+blocks+" blocks verified<br>Hash: 0000"+Math.random().toString(16).substr(2,6)+"... VALID<br>Last: Block "+blocks+"<br><br>"+logs.innerHTML;}
-function cek195(){let html=nodes.map((n,i)=> (i+1)+". "+n+" LIVE - Block "+(blocks-nodes.length+i)).join('<br>');document.getElementById('list195').innerHTML=html+"<br><br><small>Sisa "+(195-nodes.length)+" negara akan sync tiap MINING (1 per hari)</small>";document.getElementById('modal195').style.display='block';}
-function showLedger(){document.getElementById('log').innerHTML="Ledger vqi_chain.dat - "+blocks+" blocks<br>Hash: 0000"+Math.random().toString(16).substr(2,6)+"...<br><br>"+document.getElementById('log').innerHTML;}
-function mulaiMining(){if(mining)return;if(localStorage.getItem('vqi_last_mine')===new Date().toDateString()){alert('Sudah mining hari ini! Balik besok. (10 menit/hari)');return;}mining=true;let s=600;document.getElementById('mineBtn').innerText='MINING... 10:00';interval=setInterval(()=>{s--;document.getElementById('sisa').innerText=Math.floor(s/60)+':'+('0'+s%60).slice(-2);document.getElementById('tries').innerText=Math.floor(Math.random()*9999);document.getElementById('hs').innerText=Math.floor(Math.random()*50+10);document.getElementById('nonce').innerText=Math.floor(Math.random()*999999);if(s<=0){clearInterval(interval);mining=false;blocks++;if(nodes.length<195){let sisa=NEGARA195.filter(x=>!nodes.includes(x));if(sisa.length>0)nodes.push(sisa[Math.floor(Math.random()*sisa.length)]);}localStorage.setItem('vqi_blocks',blocks);localStorage.setItem('vqi_nodes',JSON.stringify(nodes));localStorage.setItem('vqi_last_mine',new Date().toDateString());document.getElementById('log').innerHTML="MINED Block "+blocks+" -> +"+nodes[nodes.length-1]+" ("+nodes.length+"/195)<br>"+document.getElementById('log').innerHTML;document.getElementById('mineBtn').innerText='SELESAI HARI INI';document.getElementById('sisa').innerText='0:00';updateUI();}},1000);}
+
+let nodes=JSON.parse(localStorage.getItem('vqi_nodes')||'["ID"]');
+let blocks=parseInt(localStorage.getItem('vqi_blocks')||'447');
+let chain=JSON.parse(localStorage.getItem('vqi_chain')||'[]');
+if(chain.length==0){ chain.push({height:447, hash:"0000a38564genesis", nonce:0}); }
+
+// STATS 3 FITUR YANG HILANG - BALIKIN
+let views=parseInt(localStorage.getItem('vqi_views')||'0')+1;
+localStorage.setItem('vqi_views',views);
+let dls=parseInt(localStorage.getItem('vqi_dls')||'17');
+let insts=parseInt(localStorage.getItem('vqi_insts')||'15');
+
+function updateUI(){
+ document.getElementById('c195').innerText=nodes.length;
+ document.getElementById('live').innerText=blocks;
+ document.getElementById('height').innerText=blocks;
+ document.getElementById('viewCount').innerText=views;
+ document.getElementById('dlCount').innerText=dls;
+ document.getElementById('instCount').innerText=insts;
+ localStorage.setItem('vqi_blocks',blocks);
+ localStorage.setItem('vqi_nodes',JSON.stringify(nodes));
+ localStorage.setItem('vqi_chain',JSON.stringify(chain));
+}
+
+function verifyChain(){
+ let log=document.getElementById('log');
+ let valid=true;
+ for(let i=1;i<chain.length;i++){ if(!chain[i].hash.startsWith("0000")) valid=false; }
+ log.innerHTML=(valid?"✅ VALID":"❌ INVALID")+" - Chain "+blocks+" blocks checked | READ ONLY - Tidak nambah block<br><br>"+log.innerHTML;
+}
+
+function cek195(){
+ let html=nodes.map((n,i)=> (i+1)+". "+n+" LIVE Block "+(447+i)).join('<br>');
+ document.getElementById('list195').innerHTML="<h3>"+nodes.length+"/195 REAL</h3>"+html;
+ document.getElementById('modal195').style.display='block';
+}
+function showLedger(){
+ let html=chain.slice(-5).reverse().map(b=> "Block "+b.height+" | "+b.hash.substr(0,20)+"... | nonce "+b.nonce).join('<br>');
+ document.getElementById('log').innerHTML=html+"<br><br>"+document.getElementById('log').innerHTML;
+}
+function downloadApk(){
+ dls++; localStorage.setItem('vqi_dls',dls); updateUI();
+ document.getElementById('log').innerHTML="📥 Download APK clicked - Count: "+dls+"<br><br>"+document.getElementById('log').innerHTML;
+ // ganti link apk kamu disini
+ window.open("https://nednicpi.github.io/tiket.apk","_blank");
+ setTimeout(()=>{ if(confirm("Sudah Install APK? Klik OK untuk tambah Install count")){ insts++; localStorage.setItem('vqi_insts',insts); updateUI(); } },2000);
+}
+
+let mining=false;
+async function mulaiMiningREAL(){
+ if(mining) return;
+ if(localStorage.getItem('vqi_last_mine')===new Date().toDateString()){ alert("Sudah mining hari ini! Limit 10 menit/hari"); return; }
+ mining=true;
+ document.getElementById('status').innerText="MINING REAL SHA256...";
+ document.getElementById('mineBtn').innerText="MINING... JANGAN TUTUP HP";
+ let nonce=0; let tries=0; let start=Date.now(); let target="0000";
+ let sisa=600;
+ let timer=setInterval(()=>{ sisa--; document.getElementById('sisa').innerText=Math.floor(sisa/60)+":"+( '0'+sisa%60).slice(-2); if(sisa<=0){ clearInterval(timer); mining=false; document.getElementById('status').innerText="TIMEOUT"; } },1000);
+ while(mining && sisa>0){
+   let data="VQI_BLOCK_"+(blocks+1)+"_"+nonce+"_"+chain[chain.length-1].hash;
+   let hashBuffer=await crypto.subtle.digest("SHA-256", new TextEncoder().encode(data));
+   let hashHex=Array.from(new Uint8Array(hashBuffer)).map(b=>b.toString(16).padStart(2,'0')).join('');
+   tries++;
+   if(tries % 50===0){
+     document.getElementById('tries').innerText=tries;
+     document.getElementById('nonce').innerText=nonce;
+     document.getElementById('hs').innerText=Math.floor(tries/((Date.now()-start)/1000));
+     await new Promise(r=>setTimeout(r,0));
+   }
+   if(hashHex.startsWith(target)){
+     clearInterval(timer); blocks++; chain.push({height:blocks, hash:hashHex, nonce:nonce, tries:tries});
+     if(nodes.length<195){ let sisaNegara=NEGARA195.filter(x=>!nodes.includes(x)); if(sisaNegara.length>0) nodes.push(sisaNegara[Math.floor(Math.random()*sisaNegara.length)]); }
+     localStorage.setItem('vqi_last_mine',new Date().toDateString()); updateUI();
+     document.getElementById('log').innerHTML="🎉 REAL PoW FOUND! Block "+blocks+" Hash: "+hashHex+" Nonce: "+nonce+"<br><br>"+document.getElementById('log').innerHTML;
+     document.getElementById('status').innerText="FOUND Block "+blocks; document.getElementById('mineBtn').innerText="✅ SELESAI Block "+blocks; mining=false; break;
+   }
+   nonce++;
+ }
+}
 updateUI();
 </script>
 </body>
