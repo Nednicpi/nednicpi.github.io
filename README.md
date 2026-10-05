@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logi_vqi.png" width="110" style="filter:drop-shadow(0 0 10px gold)">
+  <img src="logo_vqi.png" width="110" style="filter:drop-shadow(0 0 10px gold)">
 </p>
 <h1 align="center">VQI GLOBAL - Enterprise Platform</h1>
 <p align="center">Enterprise Crypto Mining • Validation • Security Platform | 1M Users / 1 Year Ready</p>
